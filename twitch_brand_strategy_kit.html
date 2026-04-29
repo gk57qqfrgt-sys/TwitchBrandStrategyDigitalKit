@@ -1,0 +1,774 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0b;--bg2:#111114;--bg3:#18181c;--bg4:#1e1e24;
+    --border:#ffffff14;--border2:#ffffff22;--border3:#ffffff35;
+    --text:#f0eee8;--text2:#a09e98;--text3:#6b6966;
+    --purple:#9147ff;--purple2:#772ce8;--purple3:#bf94ff;--purple4:#1a0a2e;
+    --green:#00e5a0;--green2:#00b07a;
+    --amber:#f5a623;--amber2:#c47f0a;
+    --red:#ff4757;--cyan:#00d4ff;
+    --card-r:12px;--sm-r:8px;
+  }
+  body{background:transparent;font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:14px;line-height:1.6}
+  
+  .kit{min-height:600px;background:var(--bg);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+  
+  /* TOP NAV */
+  .topnav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:0.5px solid var(--border);background:var(--bg2)}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-icon{width:28px;height:28px;background:var(--purple);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+  .logo-text{font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.02em}
+  .logo-sub{font-size:11px;color:var(--text3);font-weight:400;margin-left:2px}
+  .nav-tabs{display:flex;gap:2px}
+  .nav-tab{padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text2);background:none;border:none;transition:all .15s}
+  .nav-tab:hover{color:var(--text);background:var(--bg3)}
+  .nav-tab.active{color:var(--purple3);background:var(--purple4)}
+  .progress-pill{font-size:11px;color:var(--text3);background:var(--bg4);padding:4px 10px;border-radius:20px;border:0.5px solid var(--border)}
+  
+  /* SCREENS */
+  .screen{display:none;flex:1;overflow-y:auto;padding:0}
+  .screen.active{display:block}
+  
+  /* HOME */
+  .home-hero{padding:40px 32px 0;text-align:center}
+  .home-badge{display:inline-flex;align-items:center;gap:6px;background:var(--purple4);border:0.5px solid var(--purple2);border-radius:20px;padding:5px 14px;font-size:11px;font-weight:500;color:var(--purple3);margin-bottom:20px}
+  .home-badge span{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .home-h1{font-size:28px;font-weight:700;line-height:1.25;margin-bottom:10px;letter-spacing:-0.5px}
+  .home-h1 em{color:var(--purple3);font-style:normal}
+  .home-sub{font-size:14px;color:var(--text2);max-width:420px;margin:0 auto 28px;line-height:1.7}
+  .home-cta{display:inline-flex;align-items:center;gap:8px;background:var(--purple);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+  .home-cta:hover{background:var(--purple2);transform:translateY(-1px)}
+  .home-cta svg{width:16px;height:16px}
+  .home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:28px 20px 20px;max-width:680px;margin:0 auto}
+  .home-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--card-r);padding:16px;cursor:pointer;transition:all .15s}
+  .home-card:hover{border-color:var(--border2);background:var(--bg4);transform:translateY(-2px)}
+  .home-card-icon{font-size:18px;margin-bottom:8px}
+  .home-card-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .home-card-desc{font-size:11px;color:var(--text3);line-height:1.5}
+  .home-stats{display:flex;justify-content:center;gap:28px;padding:0 20px 24px;border-top:0.5px solid var(--border);margin-top:8px;padding-top:20px}
+  .home-stat{text-align:center}
+  .home-stat-n{font-size:20px;font-weight:700;color:var(--purple3)}
+  .home-stat-l{font-size:11px;color:var(--text3);margin-top:2px}
+
+  /* LEARN */
+  .section-header{padding:24px 24px 16px;border-bottom:0.5px solid var(--border)}
+  .section-title{font-size:18px;font-weight:700;margin-bottom:4px}
+  .section-desc{font-size:12px;color:var(--text2)}
+  .learn-tabs{display:flex;gap:4px;padding:16px 20px 0;border-bottom:0.5px solid var(--border)}
+  .learn-tab{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
+  .learn-tab.active{color:var(--purple3);border-bottom-color:var(--purple)}
+  .learn-content{padding:20px}
+  .learn-panel{display:none}
+  .learn-panel.active{display:block}
+  
+  /* TWITCH EXPLAINED */
+  .explainer-block{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--card-r);padding:18px;margin-bottom:12px}
+  .explainer-block h3{font-size:13px;font-weight:600;color:var(--purple3);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .explainer-block p{font-size:12px;color:var(--text2);line-height:1.7}
+  .explainer-block .tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;background:var(--bg4);border:0.5px solid var(--border2);color:var(--text2)}
+  .tag.purple{background:var(--purple4);border-color:var(--purple2);color:var(--purple3)}
+  .tag.green{background:#002a1a;border-color:var(--green2);color:var(--green)}
+  .tag.amber{background:#1a1000;border-color:var(--amber2);color:var(--amber)}
+  
+  /* GLOSSARY */
+  .gloss-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .gloss-item{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--sm-r);padding:12px}
+  .gloss-term{font-size:12px;font-weight:600;color:var(--purple3);margin-bottom:4px}
+  .gloss-def{font-size:11px;color:var(--text2);line-height:1.6}
+  
+  /* CARDS SCREEN */
+  .cards-filter{display:flex;gap:6px;padding:16px 20px;border-bottom:0.5px solid var(--border);overflow-x:auto;flex-wrap:wrap}
+  .filter-btn{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;background:var(--bg3);border:0.5px solid var(--border);color:var(--text2);white-space:nowrap;transition:all .15s}
+  .filter-btn.active{background:var(--purple4);border-color:var(--purple2);color:var(--purple3)}
+  .cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 20px}
+  .strategy-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--card-r);padding:16px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+  .strategy-card:hover{border-color:var(--border3);transform:translateY(-2px)}
+  .strategy-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent,var(--purple))}
+  .strategy-card.objective{--card-accent:var(--purple)}
+  .strategy-card.audience{--card-accent:var(--cyan)}
+  .strategy-card.creator{--card-accent:var(--green)}
+  .strategy-card.format{--card-accent:var(--amber)}
+  .strategy-card.risk{--card-accent:var(--red)}
+  .strategy-card.integration{--card-accent:#e879f9}
+  .strategy-card.measurement{--card-accent:#38bdf8}
+  .strategy-card.culture{--card-accent:#fb7185}
+  .card-cat{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+  .card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+  .card-def{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+  .card-meta{display:flex;justify-content:space-between;align-items:center}
+  .card-use{font-size:10px;color:var(--text3)}
+  .card-add-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:500;background:var(--bg4);border:0.5px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s}
+  .card-add-btn:hover{background:var(--purple4);border-color:var(--purple2);color:var(--purple3)}
+  .card-add-btn.added{background:var(--purple4);border-color:var(--purple2);color:var(--purple3)}
+  
+  /* BOARD (STRATEGY FLOW) */
+  .board{padding:16px 20px}
+  .board-step{display:flex;gap:14px;margin-bottom:10px}
+  .step-connector{display:flex;flex-direction:column;align-items:center;min-width:32px}
+  .step-num{width:32px;height:32px;border-radius:50%;background:var(--bg4);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text3);flex-shrink:0;transition:all .3s}
+  .step-num.active{background:var(--purple);border-color:var(--purple);color:#fff;box-shadow:0 0 16px #9147ff44}
+  .step-num.done{background:var(--green2);border-color:var(--green2);color:#fff}
+  .step-line{flex:1;width:1px;background:var(--border);margin:4px 0;min-height:20px}
+  .step-body{flex:1;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--card-r);padding:14px;min-height:52px;cursor:pointer;transition:all .15s}
+  .step-body.active{border-color:var(--purple2);background:var(--bg4)}
+  .step-body.done{border-color:var(--green2)22}
+  .step-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .step-desc{font-size:11px;color:var(--text3)}
+  .step-selection{font-size:11px;color:var(--purple3);margin-top:6px;font-weight:500}
+  .step-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .choice-btn{padding:6px 12px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;background:var(--bg4);border:0.5px solid var(--border2);color:var(--text2);transition:all .15s}
+  .choice-btn:hover{border-color:var(--purple2);color:var(--purple3)}
+  .choice-btn.selected{background:var(--purple4);border-color:var(--purple);color:var(--purple3)}
+  
+  /* OUTPUT */
+  .output-card{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--card-r);padding:18px;margin-bottom:10px}
+  .output-label{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+  .output-value{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .output-rationale{font-size:11px;color:var(--text2);line-height:1.7}
+  .output-hero{background:linear-gradient(135deg,var(--purple4),var(--bg3));border:0.5px solid var(--purple2);border-radius:var(--card-r);padding:22px;margin-bottom:16px;text-align:center}
+  .output-hero-title{font-size:16px;font-weight:700;color:var(--purple3);margin-bottom:6px}
+  .output-hero-sub{font-size:12px;color:var(--text2);line-height:1.6}
+  .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+  .kpi{background:var(--bg4);border-radius:var(--sm-r);padding:12px;text-align:center}
+  .kpi-n{font-size:18px;font-weight:700;color:var(--purple3)}
+  .kpi-l{font-size:10px;color:var(--text3);margin-top:2px}
+  .risk-row{display:flex;gap:6px;align-items:center;padding:8px;background:var(--bg4);border-radius:6px;margin-bottom:6px}
+  .risk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .risk-dot.low{background:var(--green)}
+  .risk-dot.med{background:var(--amber)}
+  .risk-dot.high{background:var(--red)}
+  .risk-text{font-size:11px;color:var(--text2)}
+  .next-step-item{display:flex;gap:10px;align-items:flex-start;padding:10px;background:var(--bg4);border-radius:8px;margin-bottom:6px}
+  .next-step-n{width:20px;height:20px;border-radius:50%;background:var(--purple);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .next-step-text{font-size:11px;color:var(--text2);line-height:1.6}
+  
+  /* BOTTOM NAV */
+  .bottom-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-top:0.5px solid var(--border);background:var(--bg2)}
+  .bottom-btn{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+  .btn-ghost{background:none;border:0.5px solid var(--border2);color:var(--text2)}
+  .btn-ghost:hover{border-color:var(--border3);color:var(--text)}
+  .btn-primary{background:var(--purple);border:none;color:#fff}
+  .btn-primary:hover{background:var(--purple2);transform:translateY(-1px)}
+  .btn-primary:disabled{background:var(--bg4);color:var(--text3);cursor:not-allowed;transform:none}
+  
+  /* BEST/AVOID SCREEN */
+  .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px}
+  .do-col{background:var(--bg3);border:0.5px solid #00e5a022;border-radius:var(--card-r);overflow:hidden}
+  .dont-col{background:var(--bg3);border:0.5px solid #ff475722;border-radius:var(--card-r);overflow:hidden}
+  .dd-header{padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:0.05em}
+  .do-col .dd-header{background:#002a1a;color:var(--green);border-bottom:0.5px solid #00e5a022}
+  .dont-col .dd-header{background:#1a0a0a;color:var(--red);border-bottom:0.5px solid #ff475722}
+  .dd-item{display:flex;gap:8px;align-items:flex-start;padding:10px 14px;border-bottom:0.5px solid var(--border)}
+  .dd-item:last-child{border-bottom:none}
+  .dd-dot{font-size:12px;flex-shrink:0;margin-top:1px}
+  .dd-text{font-size:11px;color:var(--text2);line-height:1.6}
+  
+  /* MEASUREMENT */
+  .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 20px 20px}
+  .metric-item{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--sm-r);padding:14px}
+  .metric-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+  .metric-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:8px}
+  .metric-bar-wrap{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+  .metric-bar{height:100%;border-radius:2px;background:var(--purple)}
+
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  
+  /* scrollbar */
+  .screen::-webkit-scrollbar{width:4px}
+  .screen::-webkit-scrollbar-track{background:transparent}
+  .screen::-webkit-scrollbar-thumb{background:var(--border3);border-radius:2px}
+  
+  .added-badge{position:absolute;top:10px;right:10px;background:var(--purple);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px}
+  
+  .integration-list{padding:0 20px 20px}
+  .int-item{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--sm-r);padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+  .int-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .int-body .int-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+  .int-body .int-desc{font-size:11px;color:var(--text2);line-height:1.6}
+</style>
+
+<h2 class="sr-only">Twitch Brand Strategy Kit — an interactive educational tool for brands entering the Twitch platform</h2>
+
+<div class="kit">
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="logo">
+      <div class="logo-icon">TK</div>
+      <div>
+        <span class="logo-text">Twitch Brand Strategy Kit</span>
+        <span class="logo-sub"> — Strategy Tool</span>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showScreen('home')">Home</button>
+      <button class="nav-tab" onclick="showScreen('learn')">Learn</button>
+      <button class="nav-tab" onclick="showScreen('cards')">Cards</button>
+      <button class="nav-tab" onclick="showScreen('board')">Strategy</button>
+      <button class="nav-tab" onclick="showScreen('output')">Output</button>
+    </div>
+    <div class="progress-pill" id="progress-pill">0 / 6 steps</div>
+  </div>
+
+  <!-- ===== HOME ===== -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero">
+      <div class="home-badge"><span></span>Interactive Strategy Tool</div>
+      <div class="home-h1">Enter Twitch with<br><em>confidence and clarity.</em></div>
+      <p class="home-sub">A board-game-style strategy kit for brands. Learn the platform, understand the culture, build a campaign that actually fits.</p>
+      <button class="home-cta" onclick="showScreen('learn')">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Start here
+      </button>
+    </div>
+    <div class="home-grid">
+      <div class="home-card" onclick="showScreen('learn')">
+        <div class="home-card-icon">📚</div>
+        <div class="home-card-title">Learn Twitch</div>
+        <div class="home-card-desc">Platform explained, glossary, culture guide, and how brands fit in.</div>
+      </div>
+      <div class="home-card" onclick="showScreen('cards')">
+        <div class="home-card-icon">🃏</div>
+        <div class="home-card-title">Strategy Cards</div>
+        <div class="home-card-desc">Browse 40+ cards across 8 categories. Select the ones that fit your brand.</div>
+      </div>
+      <div class="home-card" onclick="showScreen('board')">
+        <div class="home-card-icon">🗺️</div>
+        <div class="home-card-title">Build Strategy</div>
+        <div class="home-card-desc">Move through 6 decision stages and construct your Twitch campaign.</div>
+      </div>
+    </div>
+    <div class="home-stats">
+      <div class="home-stat"><div class="home-stat-n">140M+</div><div class="home-stat-l">Monthly visitors</div></div>
+      <div class="home-stat"><div class="home-stat-n">8.8M</div><div class="home-stat-l">Monthly streamers</div></div>
+      <div class="home-stat"><div class="home-stat-n">~2.5B</div><div class="home-stat-l">Hours watched / mo.</div></div>
+      <div class="home-stat"><div class="home-stat-n">73%</div><div class="home-stat-l">Audience 18–34 yrs</div></div>
+    </div>
+  </div>
+
+  <!-- ===== LEARN ===== -->
+  <div class="screen" id="screen-learn">
+    <div class="section-header">
+      <div class="section-title">Learn Twitch</div>
+      <div class="section-desc">Everything a brand needs to know before entering the platform.</div>
+    </div>
+    <div class="learn-tabs">
+      <button class="learn-tab active" onclick="showLearn('what')">What is Twitch</button>
+      <button class="learn-tab" onclick="showLearn('culture')">Culture</button>
+      <button class="learn-tab" onclick="showLearn('glossary')">Glossary</button>
+      <button class="learn-tab" onclick="showLearn('bestpractice')">Best Practices</button>
+      <button class="learn-tab" onclick="showLearn('measure')">Measurement</button>
+      <button class="learn-tab" onclick="showLearn('avoid')">What to Avoid</button>
+    </div>
+    <div class="learn-content">
+      
+      <!-- WHAT IS TWITCH -->
+      <div class="learn-panel active" id="learn-what">
+        <div class="explainer-block">
+          <h3>🎮 What is Twitch?</h3>
+          <p>Twitch is the world's largest live-streaming platform, originally built for video game broadcasting and now spanning just about anything people find worth watching live — art, cooking, music, sports, talk shows, and real-time storytelling. Unlike YouTube or Instagram, content on Twitch doesn't sit on a shelf waiting to be discovered. It's <em>live</em>, which means everything happens in real time and the audience is always part of the event.</p>
+          <div class="tag-row">
+            <span class="tag purple">Live-first</span>
+            <span class="tag purple">Interactive</span>
+            <span class="tag purple">Community-driven</span>
+            <span class="tag purple">Real-time</span>
+          </div>
+        </div>
+        <div class="explainer-block">
+          <h3>💬 Why does live interaction matter?</h3>
+          <p>On Twitch, the chat window is as much the product as the stream itself. Audiences don't just watch — they react, vote, donate, and talk back. Streamers read chat, respond, and shape the content in the moment. This creates a feedback loop between creator and community that no pre-recorded platform can replicate. Brands that understand this learn to design for interaction, not just visibility.</p>
+        </div>
+        <div class="explainer-block">
+          <h3>🏘️ Why community matters</h3>
+          <p>Every successful Twitch channel is a community with its own vocabulary, inside jokes, recurring moments, and social norms. Audiences are deeply loyal and quick to reject anything that feels like a corporate intrusion. For a brand, entering that community carelessly is a fast path to backlash. Entering it thoughtfully — through the right creator, with the right tone — can earn genuine trust.</p>
+        </div>
+        <div class="explainer-block">
+          <h3>🎯 Why authenticity is non-negotiable</h3>
+          <p>Twitch audiences are unusually advertising-literate. They've grown up online, they use ad-blockers, and they notice immediately when something feels forced or corporate. The most effective brand integrations on the platform feel like natural extensions of the stream — not interruptions. Authenticity isn't a nice-to-have on Twitch. It's the price of admission.</p>
+        </div>
+        <div class="explainer-block">
+          <h3>🔍 Content categories on Twitch</h3>
+          <p>Twitch organizes content by category — essentially the channel's topic or game. A brand choosing to enter Twitch must choose the right category, which shapes the audience they'll reach.</p>
+          <div class="tag-row">
+            <span class="tag">Gaming</span>
+            <span class="tag">Just Chatting</span>
+            <span class="tag">IRL & Outdoor</span>
+            <span class="tag">Music & DJs</span>
+            <span class="tag">Art & Creative</span>
+            <span class="tag">Sports</span>
+            <span class="tag">ASMR</span>
+            <span class="tag">Food & Drink</span>
+            <span class="tag">Talk Shows</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- CULTURE -->
+      <div class="learn-panel" id="learn-culture">
+        <div class="explainer-block">
+          <h3>🧠 The logic of Twitch culture</h3>
+          <p>Twitch has developed a culture unlike any other platform — dense with shared references, ironic humor, community rituals, and a distinct language of emotes and memes. This culture is bottom-up, meaning it comes from creators and their communities, not from Twitch itself. Brands that try to impose a top-down message without first understanding the cultural context will almost always read as out of place.</p>
+        </div>
+        <div class="explainer-block">
+          <h3>😂 Emotes as cultural currency</h3>
+          <p>Emotes are custom emoji unique to each channel or the platform at large. They encode emotion, irony, and in-group membership. Using the right emote at the right time is a signal that you belong. For brands, incorporating emotes into integrations — or sponsoring custom channel emotes — can signal cultural awareness rather than corporate distance.</p>
+          <div class="tag-row">
+            <span class="tag green">PogChamp</span>
+            <span class="tag green">Kappa</span>
+            <span class="tag green">LUL</span>
+            <span class="tag green">OMEGALUL</span>
+            <span class="tag green">monkaS</span>
+            <span class="tag green">PauseChamp</span>
+          </div>
+        </div>
+        <div class="explainer-block">
+          <h3>⚡ Raids and community rituals</h3>
+          <p>When a streamer ends their session, they can "raid" another channel — sending their entire audience to a smaller creator. This is a communal act of support and solidarity. Other rituals include hype trains (collective subscription drives), channel point redemptions, and polls. Brands that sponsor or participate in these rituals integrate into the culture rather than disrupting it.</p>
+        </div>
+        <div class="explainer-block">
+          <h3>💎 The creator-first economy</h3>
+          <p>Twitch is built on the creator economy. Streamers are not influencers in the traditional sense — they are full-time hosts of their own live television shows. The best brand collaborations treat creators as genuine creative partners, not just ad delivery vehicles. A creator who authentically believes in a brand will sell it far more effectively than any scripted read.</p>
+        </div>
+      </div>
+      
+      <!-- GLOSSARY -->
+      <div class="learn-panel" id="learn-glossary">
+        <div class="gloss-grid">
+          <div class="gloss-item"><div class="gloss-term">Streamer</div><div class="gloss-def">A content creator who broadcasts themselves live on Twitch. They are the host, entertainer, and community manager of their channel.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Chat</div><div class="gloss-def">The real-time text feed running alongside every live stream where the audience interacts, reacts, and communicates.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Sub (Subscription)</div><div class="gloss-def">A paid monthly membership to a channel. Subs grant exclusive emotes, ad-free viewing, and signals community loyalty. Costs $4.99 – $24.99/mo.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Gifted Sub</div><div class="gloss-def">A subscription paid for by another viewer to give someone else. Creates community goodwill and often triggers a celebratory moment in chat.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Emote</div><div class="gloss-def">Custom image-based reactions used in chat, unique to each channel or the platform. The visual language of Twitch culture.</div></div>
+          <div class="gloss-item"><div class="gloss-term">VOD</div><div class="gloss-def">Video On Demand — a replay of a past stream. VODs can be viewed after the live broadcast ends. Important for reach and content longevity.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Raid</div><div class="gloss-def">Sending your entire live audience to another channel at the end of your stream. A cultural act of solidarity and community building.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Mod (Moderator)</div><div class="gloss-def">A trusted community member who manages chat behavior, enforces rules, and keeps the stream environment safe and on-topic.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Overlay</div><div class="gloss-def">On-screen graphics layered over the video feed — alerts, logos, donation bars. The visual skin of a stream. Key real estate for brand logos.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Affiliate / Partner</div><div class="gloss-def">Twitch's two creator tiers. Affiliates can earn income; Partners get advanced monetization. Both can be valuable brand collaborators.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Category</div><div class="gloss-def">The topic or game a streamer is streaming. Used for discovery. Brands should match category to audience relevance.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Hype Train</div><div class="gloss-def">A communal event triggered by multiple subs/donations in quick succession. Creates excitement and FOMO. Brands can sponsor these moments.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Clip</div><div class="gloss-def">A short highlight (up to 60 sec) that viewers can cut from a live stream. Clips spread content virally across Twitter, Reddit, and TikTok.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Channel Points</div><div class="gloss-def">A virtual currency earned by watching. Viewers redeem them for custom rewards. Brands can sponsor Channel Point redemptions.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Branded Content</div><div class="gloss-def">Any streamed content that is paid for or sponsored by a brand. Must be disclosed using Twitch's built-in tools per FTC and platform guidelines.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Bit</div><div class="gloss-def">Twitch's virtual currency. Viewers buy Bits to "Cheer" streamers. 1 Bit = roughly 1 cent for the streamer. A direct, animated support signal.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Watch Time</div><div class="gloss-def">Total hours viewed — a key metric for reach and audience engagement. More watch time = deeper brand impression.</div></div>
+          <div class="gloss-item"><div class="gloss-term">Co-stream</div><div class="gloss-def">Two or more streamers broadcasting the same event simultaneously with their own commentary. Multiplies reach for a single activation.</div></div>
+        </div>
+      </div>
+      
+      <!-- BEST PRACTICES -->
+      <div class="learn-panel" id="learn-bestpractice">
+        <div class="do-dont" style="padding:0;margin-bottom:12px">
+          <div class="do-col">
+            <div class="dd-header">✓ DO</div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Listen to the community before entering it. Spend time watching streamers in your target category.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Choose a creator whose values, humor, and audience align with your brand — not just their follower count.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Allow the creator to use their authentic voice when delivering your message.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Use disclosure tools correctly. Transparency builds trust on Twitch, not suspicion.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Design activations that invite chat to participate — polls, redemptions, live reactions.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Think long-term. A sustained brand presence builds more trust than a one-off moment.</div></div>
+            <div class="dd-item"><div class="dd-dot">✓</div><div class="dd-text">Treat Twitch as a community channel, not a media buy.</div></div>
+          </div>
+          <div class="dont-col">
+            <div class="dd-header">✕ AVOID</div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not treat Twitch like TV advertising. It's not a passive medium. Interruption doesn't work here.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not write scripts for creators. Over-controlled messaging destroys authenticity.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not ignore chat culture. Tone-deaf brand behavior in chat spreads quickly and negatively.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not partner with creators whose audience has no overlap with your brand's target.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not over-brand. Too many logos, banners, and sponsor reads feel invasive.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not skip disclosure. Undisclosed paid content is an FTC violation and destroys trust.</div></div>
+            <div class="dd-item"><div class="dd-dot">✕</div><div class="dd-text">Do not expect instant conversion. Brand equity on Twitch is built slowly and deliberately.</div></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- MEASUREMENT -->
+      <div class="learn-panel" id="learn-measure">
+        <div style="padding-bottom:16px">
+          <div class="explainer-block" style="margin-bottom:0;border-radius:var(--card-r) var(--card-r) 0 0;border-bottom:none">
+            <h3>📊 How to measure success on Twitch</h3>
+            <p>Twitch metrics differ from traditional digital advertising. Prioritise depth of engagement over surface-level impressions. A 2-hour brand mention in a trusted community context is worth more than a 30-second pre-roll seen by the same number of people.</p>
+          </div>
+        </div>
+        <div class="metric-grid" style="padding:0">
+          <div class="metric-item"><div class="metric-name">Average Concurrent Viewers (ACV)</div><div class="metric-desc">The average number of people watching simultaneously during a sponsored segment. The gold standard Twitch reach metric.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:95%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Total Watch Time</div><div class="metric-desc">Hours viewed across the entire stream. Indicates depth of brand exposure, not just impressions.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:88%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Chat Engagement Rate</div><div class="metric-desc">Messages per minute during sponsored segments vs baseline. High chat activity signals brand moments landing well.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:80%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Clip Virality</div><div class="metric-desc">How many viewers clip a brand moment and share it externally. Clips on Twitter/Reddit extend reach beyond the stream.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:72%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Sentiment Analysis</div><div class="metric-desc">Qualitative reading of chat reactions during branded moments. Are responses positive, curious, or dismissive?</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:85%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Brand Recall (Survey)</div><div class="metric-desc">Post-stream surveys measuring aided/unaided brand recall. The most direct proof of advertising effectiveness.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:90%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Unique Viewers</div><div class="metric-desc">Total distinct accounts that tuned in during the sponsored stream. Comparable to reach in traditional advertising.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:78%"></div></div></div>
+          <div class="metric-item"><div class="metric-name">Channel Point Redemptions</div><div class="metric-desc">If the brand sponsors a Channel Point reward, redemptions directly measure audience action and intent.</div><div class="metric-bar-wrap"><div class="metric-bar" style="width:65%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- AVOID -->
+      <div class="learn-panel" id="learn-avoid">
+        <div class="explainer-block">
+          <h3>⚠️ The most common brand mistakes on Twitch</h3>
+          <p>Brands that fail on Twitch almost always fail for the same reasons. Understanding these pitfalls is as important as knowing best practices. Most mistakes come down to treating Twitch like a traditional media channel.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="risk-row"><div class="risk-dot high"></div><div class="risk-text"><strong style="color:var(--text)">Treating Twitch like TV.</strong> Running 30-second pre-rolls or interruptive ad formats creates resentment. Twitch audiences actively avoid advertising — your brand must earn its place in the stream, not interrupt it.</div></div>
+          <div class="risk-row"><div class="risk-dot high"></div><div class="risk-text"><strong style="color:var(--text)">Over-controlling the creator.</strong> Handing a creator a full script strips them of their voice — the only reason their audience trusts them. The most effective brand reads sound unscripted because they largely are.</div></div>
+          <div class="risk-row"><div class="risk-dot high"></div><div class="risk-text"><strong style="color:var(--text)">Skipping or weak disclosure.</strong> FTC rules require clear disclosure for paid partnerships. Hiding sponsored content is illegal. On Twitch, transparent disclosure rarely hurts — audiences are surprisingly accepting of honest sponsorships.</div></div>
+          <div class="risk-row"><div class="risk-dot med"></div><div class="risk-text"><strong style="color:var(--text)">Wrong creator for the audience.</strong> A creator's follower count tells you nothing if their audience doesn't match your target. Audience composition, category, and creator values are more important than raw size.</div></div>
+          <div class="risk-row"><div class="risk-dot med"></div><div class="risk-text"><strong style="color:var(--text)">Over-branding the stream.</strong> Excessive logo placement, sponsor reads every 15 minutes, and intrusive overlays signal desperation rather than partnership. Restraint builds more goodwill than saturation.</div></div>
+          <div class="risk-row"><div class="risk-dot med"></div><div class="risk-text"><strong style="color:var(--text)">Ignoring chat culture.</strong> If your brand representative enters chat and posts corporate-sounding messages, the community will notice and react. Engage authentically or not at all.</div></div>
+          <div class="risk-row"><div class="risk-dot low"></div><div class="risk-text"><strong style="color:var(--text)">One-off activation strategy.</strong> A single sponsored stream builds almost no lasting brand equity. Twitch rewards presence, consistency, and community investment over time.</div></div>
+        </div>
+      </div>
+
+    </div><!-- end learn-content -->
+  </div>
+
+  <!-- ===== CARDS ===== -->
+  <div class="screen" id="screen-cards">
+    <div class="section-header">
+      <div class="section-title">Strategy Cards</div>
+      <div class="section-desc">Browse and select cards to build your campaign. Selected cards inform your final output.</div>
+    </div>
+    <div class="cards-filter">
+      <button class="filter-btn active" onclick="filterCards('all',this)">All Cards</button>
+      <button class="filter-btn" onclick="filterCards('objective',this)">Objective</button>
+      <button class="filter-btn" onclick="filterCards('audience',this)">Audience</button>
+      <button class="filter-btn" onclick="filterCards('creator',this)">Creator</button>
+      <button class="filter-btn" onclick="filterCards('format',this)">Format</button>
+      <button class="filter-btn" onclick="filterCards('integration',this)">Integration</button>
+      <button class="filter-btn" onclick="filterCards('risk',this)">Risk</button>
+      <button class="filter-btn" onclick="filterCards('measurement',this)">Measurement</button>
+      <button class="filter-btn" onclick="filterCards('culture',this)">Culture</button>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+
+  <!-- ===== BOARD ===== -->
+  <div class="screen" id="screen-board">
+    <div class="section-header">
+      <div class="section-title">Strategy Builder</div>
+      <div class="section-desc">Move through each stage. Your choices shape the final campaign output.</div>
+    </div>
+    <div class="board" id="board-steps"></div>
+  </div>
+
+  <!-- ===== OUTPUT ===== -->
+  <div class="screen" id="screen-output">
+    <div style="padding:20px" id="output-body">
+      <div style="text-align:center;padding:40px 20px;color:var(--text3)">
+        <div style="font-size:32px;margin-bottom:10px">🗺️</div>
+        <div style="font-size:13px">Complete the Strategy Builder to generate your campaign output.</div>
+        <button class="bottom-btn btn-ghost" style="margin-top:16px" onclick="showScreen('board')">Go to Strategy Builder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div class="bottom-bar">
+    <div style="font-size:11px;color:var(--text3)" id="bottom-status">Select a section above to begin.</div>
+    <div style="display:flex;gap:8px">
+      <button class="bottom-btn btn-ghost" onclick="resetAll()">Reset</button>
+      <button class="bottom-btn btn-primary" id="btn-generate" onclick="generateOutput()" disabled>Generate Strategy</button>
+    </div>
+  </div>
+
+</div><!-- end kit -->
+
+<script>
+// ===== DATA =====
+const cards = [
+  // OBJECTIVE
+  {id:'o1',cat:'objective',name:'Brand Awareness',def:'Increase visibility and recognition among a new or broader audience on Twitch.',purpose:'Reach audiences who may not know your brand. Use for launches, rebrands, or market expansion.',use:'When entering Twitch for the first time or launching a new product.',limit:'Hard to attribute directly. Requires sustained presence.'},
+  {id:'o2',cat:'objective',name:'Community Building',def:'Establish a loyal brand presence within a specific Twitch community over time.',purpose:'Build long-term equity. Works best for lifestyle, gaming, and tech brands with genuine category fit.',use:'When the brand wants to be part of culture, not just advertise within it.',limit:'Slow to build. Requires real commitment and resources.'},
+  {id:'o3',cat:'objective',name:'Product Launch',def:'Use a live stream event to reveal and demo a product in real time.',purpose:'Create urgency, excitement, and shareability. The live moment becomes the media moment.',use:'For consumer tech, gaming peripherals, apparel drops, and any product with strong visual appeal.',limit:'High stakes. Technical failures or creator misfires are public.'},
+  {id:'o4',cat:'objective',name:'Direct Conversion',def:'Drive immediate purchases, sign-ups, or downloads through creator codes and tracked links.',purpose:'Measurable and performance-driven. Often paired with exclusive offers or discount codes.',use:'When KPIs are sales-focused and the brand has a clear call to action.',limit:'Feels promotional. Must be balanced with authentic integration.'},
+  {id:'o5',cat:'objective',name:'Cultural Credibility',def:'Earn genuine recognition from a hard-to-reach, advertising-resistant audience.',purpose:'Signal authenticity. Often the most valuable long-term outcome of a Twitch presence.',use:'For brands repositioning or trying to reach Gen Z / younger Millennial audiences.',limit:'Cannot be forced or bought directly. Requires genuine cultural fit.'},
+  // AUDIENCE
+  {id:'a1',cat:'audience',name:'Gen Z Gamers',def:'Viewers aged 18–24 primarily consuming gaming content on Twitch.',purpose:'High ad-resistance but deep loyalty when trust is earned. Values humor, skill, and authenticity.',use:'Gaming, tech, snack, beverage, and streetwear brands.',limit:'Highly sensitive to inauthenticity. Wrong tone = immediate backlash.'},
+  {id:'a2',cat:'audience',name:'Millennial Lifestyle',def:'Viewers aged 25–35 watching Just Chatting, IRL, music, and variety content.',purpose:'Broader category interests. More receptive to lifestyle branding and aspirational messaging.',use:'Fashion, travel, food, and wellness brands.',limit:'Harder to target by category alone. Need creator curation.'},
+  {id:'a3',cat:'audience',name:'Esports Fans',def:'Competitive gaming audience watching tournaments, team streams, and pro-player channels.',purpose:'High engagement, large scale. Responds well to performance and precision product messaging.',use:'Tech, energy drinks, gaming gear, and premium consumer electronics.',limit:'Already heavily sponsored. Saturation risk is real.'},
+  {id:'a4',cat:'audience',name:'Creative Community',def:'Viewers of art, music, and creative process streams.',purpose:'Appreciates craft and quality. Responds to brands that support creator expression.',use:'Adobe, Wacom, instrument brands, art supply, and design software.',limit:'Smaller scale than gaming. But extremely high engagement per viewer.'},
+  {id:'a5',cat:'audience',name:'Niche Interest Community',def:'Tight-knit groups around a specific game, topic, or creator.',purpose:'Highest trust and loyalty of any Twitch segment. Deeply influenced by the creator they love.',use:'Any brand with specific community relevance.',limit:'Limited scale. Must be hyper-relevant or it will feel like an intrusion.'},
+  // CREATOR
+  {id:'c1',cat:'creator',name:'Mega Creator (1M+ followers)',def:'Top-tier streamers with massive reach across a broad audience.',purpose:'Maximum awareness. The closest thing Twitch has to a mass media buy.',use:'Brand launches or when raw reach is the primary KPI.',limit:'High cost. Less community intimacy. May feel more like an ad than a partnership.'},
+  {id:'c2',cat:'creator',name:'Mid-Tier Creator (100K–1M)',def:'Established streamers with strong, loyal communities and a defined niche.',purpose:'Best balance of reach and authenticity. Community trust is high and CPM is efficient.',use:'The default choice for most brand partnerships.',limit:'Still requires audience alignment research.'},
+  {id:'c3',cat:'creator',name:'Micro Creator (10K–100K)',def:'Niche streamers with intimate, highly engaged communities.',purpose:'Highest engagement rates. Extremely trusted voices within their category.',use:'When cultural credibility matters more than raw scale.',limit:'Limited reach. Better for long-term programs than one-off activations.'},
+  {id:'c4',cat:'creator',name:'Event Host / Panel Creator',def:'Creators who run structured events, talk shows, or interview formats.',purpose:'Great for storytelling, product demos, and brand narrative integrations.',use:'Brand story, founder interviews, product launches.',limit:'Smaller live audiences but strong VOD performance.'},
+  {id:'c5',cat:'creator',name:'Esports Pro Player',def:'Professional or semi-professional competitive gamers with dedicated fanbases.',purpose:'Credibility in competitive gaming spaces. Aspirational figure for skill-focused audiences.',use:'Gaming peripherals, tech, energy, and apparel brands.',limit:'Highly competitive sponsorship market. Exclusivity deals common.'},
+  // FORMAT
+  {id:'f1',cat:'format',name:'Sponsored Stream',def:'A full stream or a dedicated segment within a stream is branded or paid for by a sponsor.',purpose:'High integration. The brand becomes part of the entertainment.',use:'Product launches, brand introductions, major campaigns.',limit:'Requires full disclosure. Must feel natural, not inserted.'},
+  {id:'f2',cat:'format',name:'Creator Brand Read',def:'The creator speaks directly about the brand in their own words during the stream.',purpose:'Authentic, trusted, and conversational. The creator lends their voice to the brand.',use:'Most effective for direct response objectives. Drives codes and links.',limit:'Length and placement matter. Back-to-back reads erode trust.'},
+  {id:'f3',cat:'format',name:'Product Integration',def:'The brand product appears naturally as part of the stream setup or activity.',purpose:'Subtle and authentic. The product is part of the environment, not the message.',use:'Beverages, snacks, peripherals, and lifestyle products.',limit:'Passive visibility. Requires disclosure even when organic-looking.'},
+  {id:'f4',cat:'format',name:'Live Event Stream',def:'A brand hosts or co-hosts a real-world event that is simultaneously streamed live on Twitch.',purpose:'Creates a media moment. The live stream becomes the event itself.',use:'Product launches, brand experiences, cultural events.',limit:'High production cost. Technical quality is essential.'},
+  {id:'f5',cat:'format',name:'Channel Point Sponsorship',def:'The brand sponsors a custom Channel Point reward that viewers can redeem live.',purpose:'Drives direct audience participation. Brand becomes part of the community ritual.',use:'Interactive brands wanting engagement over impressions.',limit:'Requires platform coordination. Redemption rates vary widely.'},
+  {id:'f6',cat:'format',name:'Overlay Branding',def:'The brand logo or visual appears in the stream overlay — the on-screen graphics layer.',purpose:'Consistent, passive brand visibility throughout the stream.',use:'Brands focused on visual recall and logo recognition.',limit:'Easy to tune out. Works best when combined with active integration.'},
+  // INTEGRATION
+  {id:'i1',cat:'integration',name:'IRL Pop-Up Stream',def:'Creator visits a brand pop-up, store, or event and streams the experience live.',purpose:'Places the brand in the physical world and the digital world simultaneously.',use:'Retail brands, fashion launches, experiential events.',limit:'Creator must be genuinely engaged. Forced enthusiasm reads immediately.'},
+  {id:'i2',cat:'integration',name:'Backstage Access',def:'Creator is given exclusive behind-the-scenes access to a brand event or production.',purpose:'Content gold. Audiences love exclusive access. Creates genuine curiosity.',use:'Events, product manufacturing stories, brand HQ visits.',limit:'Must feel genuinely exclusive. Staged "behind the scenes" is obvious.'},
+  {id:'i3',cat:'integration',name:'Co-hosted Brand Event',def:'Brand co-hosts a stream event with the creator, sharing the content focus.',purpose:'Deep integration. The brand becomes the creative co-producer.',use:'When brand has genuine content value to add (demos, reveals, expert guests).',limit:'Brand must have real value to add. Otherwise it becomes unwanted sponsor filler.'},
+  {id:'i4',cat:'integration',name:'Community Challenge',def:'Brand sponsors a community-wide challenge that viewers participate in during the stream.',purpose:'High participation. Creates UGC and shareability around the brand.',use:'Brands with playful, interactive identity.',limit:'Challenge design must feel organic to the community\'s interests.'},
+  {id:'i5',cat:'integration',name:'Charity Fundraiser Integration',def:'Brand supports a charity stream, often matching donations or sponsoring sub goals.',purpose:'Enormous goodwill. Community sees the brand contributing positively.',use:'Brands with strong CSR positioning or community values alignment.',limit:'Must be genuine. Performative charity support is quickly identified.'},
+  // RISK
+  {id:'r1',cat:'risk',name:'Audience Mismatch',def:'The brand and creator audience have insufficient demographic or interest overlap.',purpose:'Identifying this risk before activation prevents wasted spend and brand damage.',use:'Assessment tool during creator selection phase.',limit:'Often underestimated. Follower count obscures audience composition.'},
+  {id:'r2',cat:'risk',name:'Authenticity Failure',def:'The integration feels forced, scripted, or clearly corporate — destroying creator trust.',purpose:'The most common and most damaging risk on Twitch. Must be actively designed against.',use:'Review all integration points for naturalness before launch.',limit:'Subjective. Hard to predict. Use creator feedback as a signal.'},
+  {id:'r3',cat:'risk',name:'Disclosure Non-Compliance',def:'Failure to properly disclose paid partnerships per FTC and Twitch guidelines.',purpose:'Legal and reputational risk. Disclosure must be on-stream, in bio, and confirmed.',use:'Checklist item for every paid collaboration.',limit:'Regulations evolve. Must stay current with FTC guidance.'},
+  {id:'r4',cat:'risk',name:'Chat Backlash',def:'Audience reacts negatively to a brand presence, creating viral negative sentiment.',purpose:'Understanding this risk shapes how brands enter and communicate in chat.',use:'Pre-activation risk assessment.',limit:'Can escalate quickly. Community management response plan is essential.'},
+  // MEASUREMENT
+  {id:'m1',cat:'measurement',name:'Average Concurrent Viewers',def:'The average live audience size during the sponsored segment.',purpose:'Primary reach metric for Twitch. More meaningful than peak viewers.',use:'Core KPI for all brand activations.',limit:'Can mask audience quality. Pair with engagement data.'},
+  {id:'m2',cat:'measurement',name:'Chat Activity Spike',def:'Increase in messages per minute when the brand is mentioned or integrated.',purpose:'Real-time signal of audience engagement and reaction quality.',use:'Measure in-stream success of specific brand moments.',limit:'Volume alone doesn\'t reveal sentiment. Needs qualitative review.'},
+  {id:'m3',cat:'measurement',name:'Brand Recall Survey',def:'Post-stream survey measuring aided and unaided brand recall among viewers.',purpose:'The closest Twitch equivalent to a traditional advertising effectiveness metric.',use:'When brand awareness is the primary objective.',limit:'Expensive and logistically complex to run. Requires panel access.'},
+  {id:'m4',cat:'measurement',name:'Creator Code Conversions',def:'Tracked link clicks and discount code redemptions during and after the stream.',purpose:'Direct, attributable measure of campaign-driven purchase intent and action.',use:'When direct response is the campaign KPI.',limit:'Promo codes incentivize action beyond pure brand affinity. May inflate numbers.'},
+  // CULTURE
+  {id:'cu1',cat:'culture',name:'Community Values Check',def:'Assess whether the brand\'s values and tone genuinely align with the target community.',purpose:'Ensures the brand is entering a space where it belongs, not just where it can buy attention.',use:'Pre-campaign cultural fit assessment.',limit:'Requires honest self-assessment and external validation.'},
+  {id:'cu2',cat:'culture',name:'Emote Integration',def:'Brand sponsors or co-designs a custom channel emote used by the community.',purpose:'Deepest form of cultural integration. The brand becomes part of the visual language of the community.',use:'Long-term brand partners looking to embed within a specific community.',limit:'Emote design must reflect genuine community humor and aesthetics.'},
+  {id:'cu3',cat:'culture',name:'Platform Native Behavior',def:'Brand communications mimic Twitch-native language — emotes, memes, stream references.',purpose:'Signals cultural competence. Audiences reward brands that speak their language.',use:'Social media support of Twitch activations. Brand chat participation.',limit:'Requires genuine platform knowledge. Getting it wrong is very visible.'},
+];
+
+const boardSteps = [
+  {id:'objective',label:'Brand Objective',desc:'What do you want to achieve on Twitch?',choices:['Brand Awareness','Product Launch','Community Building','Direct Conversion','Cultural Credibility']},
+  {id:'audience',label:'Target Audience',desc:'Who are you trying to reach?',choices:['Gen Z Gamers','Millennial Lifestyle','Esports Fans','Creative Community','Niche Interest Community']},
+  {id:'creator',label:'Creator Type',desc:'What kind of creator fits your brand?',choices:['Mega Creator (1M+)','Mid-Tier Creator (100K–1M)','Micro Creator (10K–100K)','Esports Pro Player','Event Host / Panel Creator']},
+  {id:'format',label:'Content Format',desc:'How will the brand appear in the stream?',choices:['Sponsored Stream','Creator Brand Read','Product Integration','Live Event Stream','Channel Point Sponsorship']},
+  {id:'integration',label:'Integration Style',desc:'How deeply does the brand embed in the content?',choices:['IRL Pop-Up Stream','Backstage Access','Co-hosted Brand Event','Community Challenge','Charity Fundraiser Integration']},
+  {id:'measurement',label:'Primary KPI',desc:'How will you measure success?',choices:['Average Concurrent Viewers','Chat Activity & Sentiment','Brand Recall Survey','Creator Code Conversions','Clip Virality & Shareability']},
+];
+
+// ===== STATE =====
+let currentScreen = 'home';
+let selectedCards = new Set();
+let boardSelections = {};
+let learnTab = 'what';
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const names = ['home','learn','cards','board','output'];
+  tabs[names.indexOf(id)]?.classList.add('active');
+  currentScreen = id;
+  updateStatus();
+}
+
+function showLearn(tab) {
+  document.querySelectorAll('.learn-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.learn-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('learn-'+tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== CARDS =====
+function renderCards(filter) {
+  const grid = document.getElementById('cards-grid');
+  const filtered = filter === 'all' ? cards : cards.filter(c => c.cat === filter);
+  grid.innerHTML = filtered.map(c => `
+    <div class="strategy-card ${c.cat}" id="scard-${c.id}">
+      ${selectedCards.has(c.id) ? '<div class="added-badge">Selected</div>' : ''}
+      <div class="card-cat">${c.cat}</div>
+      <div class="card-name">${c.name}</div>
+      <div class="card-def">${c.def}</div>
+      <div class="card-meta">
+        <div class="card-use">${c.use.substring(0,50)}...</div>
+        <button class="card-add-btn ${selectedCards.has(c.id)?'added':''}" onclick="toggleCard('${c.id}')">
+          ${selectedCards.has(c.id) ? '✓ Selected' : '+ Select'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(id) {
+  if (selectedCards.has(id)) selectedCards.delete(id);
+  else selectedCards.add(id);
+  renderCards(document.querySelector('.filter-btn.active').textContent === 'All Cards' ? 'all' : document.querySelector('.filter-btn.active').textContent.toLowerCase());
+  updateStatus();
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(cat);
+}
+
+// ===== BOARD =====
+function renderBoard() {
+  const container = document.getElementById('board-steps');
+  container.innerHTML = boardSteps.map((step, i) => {
+    const isDone = !!boardSelections[step.id];
+    const isActive = !isDone && Object.keys(boardSelections).length === i;
+    return `
+      <div class="board-step">
+        <div class="step-connector">
+          <div class="step-num ${isDone?'done':isActive?'active':''}">${isDone ? '✓' : i+1}</div>
+          ${i < boardSteps.length-1 ? '<div class="step-line"></div>' : ''}
+        </div>
+        <div class="step-body ${isDone?'done':isActive?'active':''}" onclick="expandStep('${step.id}')">
+          <div class="step-label">${step.label}</div>
+          <div class="step-desc">${step.desc}</div>
+          ${isDone ? `<div class="step-selection">✓ ${boardSelections[step.id]}</div>` : ''}
+          ${isActive ? `<div class="step-choices">${step.choices.map(c => `<button class="choice-btn" onclick="selectStep('${step.id}','${c}',event)">${c}</button>`).join('')}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+  updateStatus();
+}
+
+function expandStep(id) {
+  const stepIdx = boardSteps.findIndex(s => s.id === id);
+  const completedCount = Object.keys(boardSelections).length;
+  if (stepIdx <= completedCount) {
+    delete boardSelections[id];
+    const keys = Object.keys(boardSelections);
+    boardSteps.forEach(s => {
+      const idx = boardSteps.findIndex(x => x.id === s.id);
+      if (idx > stepIdx) delete boardSelections[s.id];
+    });
+    renderBoard();
+  }
+}
+
+function selectStep(id, choice, evt) {
+  evt.stopPropagation();
+  boardSelections[id] = choice;
+  renderBoard();
+  if (Object.keys(boardSelections).length === boardSteps.length) {
+    document.getElementById('btn-generate').disabled = false;
+    document.getElementById('bottom-status').textContent = 'All steps complete. Generate your strategy.';
+  }
+}
+
+// ===== OUTPUT =====
+function generateOutput() {
+  const o = boardSelections;
+  if (Object.keys(o).length < 6) return;
+  
+  const rationales = {
+    'Brand Awareness': 'Maximum reach through creator partnership, optimising for unique viewers and watch time.',
+    'Product Launch': 'Live reveal moment creates urgency, shareability, and real-time audience reaction.',
+    'Community Building': 'Long-term creator partnership embeds the brand into community rituals and identity.',
+    'Direct Conversion': 'Creator codes and tracked links drive attributable purchases and sign-ups.',
+    'Cultural Credibility': 'Authentic micro-creator partnerships build trust that paid media cannot buy.',
+  };
+  
+  const creatorFit = {
+    'Brand Awareness': 'Mega or mid-tier creator for maximum reach.',
+    'Product Launch': 'Event host or mid-tier creator for narrative clarity and production quality.',
+    'Community Building': 'Micro or mid-tier creator for community intimacy and trust.',
+    'Direct Conversion': 'Mid-tier creator with high engagement rate and loyal chat.',
+    'Cultural Credibility': 'Micro creator who is a genuine community authority.',
+  };
+  
+  document.getElementById('output-body').innerHTML = `
+    <div style="padding:20px">
+      <div class="output-hero">
+        <div class="output-hero-title">Campaign Strategy Output</div>
+        <div class="output-hero-sub">Based on your selections across 6 strategic dimensions, here is your recommended Twitch brand campaign.</div>
+      </div>
+      
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-n">Twitch</div><div class="kpi-l">Platform</div></div>
+        <div class="kpi"><div class="kpi-n">${o.creator ? o.creator.split(' ')[0]+' '+o.creator.split(' ')[1] : '—'}</div><div class="kpi-l">Creator tier</div></div>
+        <div class="kpi"><div class="kpi-n">${o.measurement ? o.measurement.split(' ')[0] : '—'}</div><div class="kpi-l">Primary KPI</div></div>
+      </div>
+
+      <div class="output-card">
+        <div class="output-label">Objective</div>
+        <div class="output-value">${o.objective}</div>
+        <div class="output-rationale">${rationales[o.objective] || 'Build lasting brand equity through authentic Twitch presence.'}</div>
+      </div>
+      
+      <div class="output-card">
+        <div class="output-label">Target Audience</div>
+        <div class="output-value">${o.audience}</div>
+        <div class="output-rationale">This audience segment is most active in Twitch's content ecosystem and responds to creator-led brand endorsements when they feel genuinely integrated into the content.</div>
+      </div>
+      
+      <div class="output-card">
+        <div class="output-label">Recommended Creator Profile</div>
+        <div class="output-value">${o.creator}</div>
+        <div class="output-rationale">${creatorFit[o.objective] || 'Select a creator whose community values align closely with your brand positioning.'} Their audience should overlap significantly with your target of "${o.audience}".</div>
+      </div>
+
+      <div class="output-card">
+        <div class="output-label">Content Format</div>
+        <div class="output-value">${o.format}</div>
+        <div class="output-rationale">This format enables authentic integration while maintaining creator voice. It is appropriate for a ${o.objective.toLowerCase()} objective and works well with a ${o.creator.toLowerCase()} partnership.</div>
+      </div>
+      
+      <div class="output-card">
+        <div class="output-label">Integration Approach</div>
+        <div class="output-value">${o.integration}</div>
+        <div class="output-rationale">This integration style creates an experience the creator's audience will find genuine and worth watching. It avoids the forced-sponsorship feeling that damages Twitch brand activations.</div>
+      </div>
+
+      <div class="output-card">
+        <div class="output-label">Risk Assessment</div>
+        <div style="margin-top:8px">
+          <div class="risk-row"><div class="risk-dot low"></div><div class="risk-text">Authenticity risk: Manageable if creator is briefed on brand values without scripting.</div></div>
+          <div class="risk-row"><div class="risk-dot low"></div><div class="risk-text">Disclosure risk: Low — ensure Twitch branded content tool is active before stream begins.</div></div>
+          <div class="risk-row"><div class="risk-dot med"></div><div class="risk-text">Audience fit risk: Moderate — verify audience demographics with creator's media kit before signing.</div></div>
+          <div class="risk-row"><div class="risk-dot low"></div><div class="risk-text">Chat sentiment risk: Low — ${o.integration.toLowerCase()} integrations typically earn positive community reception.</div></div>
+        </div>
+      </div>
+      
+      <div class="output-card">
+        <div class="output-label">Primary Success Metric</div>
+        <div class="output-value">${o.measurement}</div>
+        <div class="output-rationale">Pair this with chat sentiment monitoring and a post-stream brand recall survey for a complete picture of campaign impact.</div>
+      </div>
+
+      <div class="output-card">
+        <div class="output-label">Recommended Next Steps</div>
+        <div style="margin-top:8px">
+          <div class="next-step-item"><div class="next-step-n">1</div><div class="next-step-text">Identify 3–5 candidate creators in the "${o.audience}" space. Request media kits and audience analytics.</div></div>
+          <div class="next-step-item"><div class="next-step-n">2</div><div class="next-step-text">Brief the creator team on brand values and campaign objective — not a script, but a shared understanding.</div></div>
+          <div class="next-step-item"><div class="next-step-n">3</div><div class="next-step-text">Set up Twitch's built-in branded content disclosure tool. Confirm FTC compliance with legal team.</div></div>
+          <div class="next-step-item"><div class="next-step-n">4</div><div class="next-step-text">Define baseline metrics for ${o.measurement.toLowerCase()} before the activation begins.</div></div>
+          <div class="next-step-item"><div class="next-step-n">5</div><div class="next-step-text">Plan for a 3-stream minimum. One activation builds no lasting brand equity on Twitch.</div></div>
+          <div class="next-step-item"><div class="next-step-n">6</div><div class="next-step-text">Post-campaign: collect VOD data, creator code conversions, and conduct audience recall survey.</div></div>
+        </div>
+      </div>
+      
+      <div style="background:var(--purple4);border:0.5px solid var(--purple2);border-radius:var(--card-r);padding:16px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--purple3);margin-bottom:6px;text-transform:uppercase">Thesis Note</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.7">This output demonstrates the practical application of Twitch platform strategy theory. The decision framework above can be mapped directly to literature on creator economy dynamics (Cunningham & Craig, 2019), parasocial relationship theory (Horton & Wohl, 1956), and authenticity in influencer marketing (Audrezet et al., 2020). The card system operationalises these theoretical frameworks into actionable campaign decisions.</div>
+      </div>
+    </div>
+  `;
+  showScreen('output');
+}
+
+// ===== UTILS =====
+function updateStatus() {
+  const done = Object.keys(boardSelections).length;
+  document.getElementById('progress-pill').textContent = `${done} / 6 steps`;
+  const statusMap = {
+    home: 'Welcome. Begin with Learn Twitch or jump to Strategy Builder.',
+    learn: 'Learning mode — explore all tabs to understand the platform.',
+    cards: `${selectedCards.size} card${selectedCards.size!==1?'s':''} selected from the deck.`,
+    board: `Strategy Builder — ${done} of 6 steps complete.`,
+    output: done === 6 ? 'Strategy generated.' : 'Complete all 6 steps to generate output.',
+  };
+  document.getElementById('bottom-status').textContent = statusMap[currentScreen] || '';
+  document.getElementById('btn-generate').disabled = done < 6;
+}
+
+function resetAll() {
+  selectedCards.clear();
+  boardSelections = {};
+  document.getElementById('btn-generate').disabled = true;
+  renderBoard();
+  renderCards('all');
+  showScreen('home');
+  updateStatus();
+}
+
+// ===== INIT =====
+renderCards('all');
+renderBoard();
+updateStatus();
+</script>
